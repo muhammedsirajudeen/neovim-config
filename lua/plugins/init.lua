@@ -124,6 +124,35 @@ return {
         color_square_width = 2,
       })
     end,
-  }
+  },
+    {
+    "akinsho/bufferline.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" }, -- Adds file icons
+    config = function()
+      require("bufferline").setup({
+        options = {
+          numbers = "ordinal", -- Show buffer numbers
+          diagnostics = "nvim_lsp",
+          show_buffer_close_icons = false,
+          show_close_icon = false,
+          separator_style = "slant",
+        },
+      })
+    end,
+  },
+
+  -- Keybindings for cycling through buffers
+  {
+    "nvim-telescope/telescope.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      vim.api.nvim_set_keymap("n", "<Tab>", ":BufferLineCycleNext<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap("n", "<S-Tab>", ":BufferLineCyclePrev<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap("n", "<leader>q", ":bd<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap("n", "<leader>q1", ":%bd|e#|bd#<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap("n", "<leader>qa", ":bufdo bd<CR>", { noremap = true, silent = true })
+
+    end,
+  },
 }
 

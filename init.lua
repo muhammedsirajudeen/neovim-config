@@ -109,4 +109,9 @@ function ShowPopup()
 end
 
 vim.api.nvim_set_keymap('n', '<leader>h', ':lua ShowPopup()<CR>', { noremap = true, silent = true })
+-- custom key binding to show focus on to the file explorer
+vim.api.nvim_set_keymap("n", "<leader>e", ":NvimTreeFocus<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>qf", ":NvimTreeClose<CR>", { noremap = true, silent = true })
+
+
 
