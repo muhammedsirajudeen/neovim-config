@@ -98,7 +98,7 @@ function ShowPopup()
         "<leader>q1  -> Close All Tabs except current",
         "<leader>qa  -> Close all Tabs",
         "<leader>e   -> Open File Explorer",
-        "<leader>qf  ->  Close File Explorer"
+        "<leader>qf  ->  Close File Explorer",
         "",
         "[ Press ENTER to Close ]"
     }
