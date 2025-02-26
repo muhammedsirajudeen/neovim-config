@@ -92,6 +92,13 @@ function ShowPopup()
         "gs -> Go to LSP Definition",
         "~! -> Insert Current Date",
         "<leader>h -> Show This Popup",
+        "<Tab>  ->  Move to next tab",
+        "<S-Tab> Move to prev tab",
+        "<leader>q -> Close Current Tab ",
+        "<leader>q1  -> Close All Tabs except current",
+        "<leader>qa  -> Close all Tabs",
+        "<leader>e   -> Open File Explorer",
+        "<leader>qf  ->  Close File Explorer"
         "",
         "[ Press ENTER to Close ]"
     }
