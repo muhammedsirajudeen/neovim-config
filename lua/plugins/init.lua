@@ -180,5 +180,110 @@ return {
 
     end,
   },
+
+  -- 1. Which-Key (Keybinding popup cheat sheet)
+  {
+    "folke/which-key.nvim",
+    event = "VeryLazy",
+    init = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 300
+    end,
+    opts = {},
+  },
+
+  -- 2. Treesitter (Better Highlighting & Code Comprehension)
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    config = function()
+      require("nvim-treesitter.configs").setup({
+        ensure_installed = { "lua", "vim", "vimdoc", "javascript", "typescript", "python", "html", "css" },
+        sync_install = false,
+        auto_install = true,
+        highlight = { enable = true },
+        indent = { enable = true },
+      })
+    end,
+  },
+
+  -- 3. Nvim-Surround (Add/change/delete surrounding characters)
+  {
+    "kylechui/nvim-surround",
+    version = "*", -- Use for stability
+    event = "VeryLazy",
+    config = function()
+      require("nvim-surround").setup({})
+    end
+  },
+
+  -- 4. Conform.nvim (Painless Code Formatting)
+  {
+    "stevearc/conform.nvim",
+    event = { "BufWritePre" },
+    cmd = { "ConformInfo" },
+    keys = {
+      {
+        "<leader>fm",
+        function()
+          require("conform").format({ async = true, lsp_fallback = true })
+        end,
+        mode = "",
+        desc = "Format buffer",
+      },
+    },
+    opts = {
+      formatters_by_ft = {
+        lua = { "stylua" },
+        python = { "isort", "black" },
+        javascript = { { "prettierd", "prettier" } },
+        typescript = { { "prettierd", "prettier" } },
+      },
+      format_on_save = {
+        timeout_ms = 500,
+        lsp_fallback = true,
+      },
+    },
+  },
+
+  -- 5. Flash.nvim (Instant File Navigation)
+  {
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    opts = {},
+    keys = {
+      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+    },
+  },
+
+  -- 6. Noice.nvim (Modern GUI replacements)
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    opts = {
+      lsp = {
+        -- override markdown rendering so that cmp and other plugins use Treesitter
+        override = {
+          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+          ["vim.lsp.util.stylize_markdown"] = true,
+          ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
+        },
+      },
+      presets = {
+        bottom_search = true, -- use a classic bottom cmdline for search
+        command_palette = true, -- position the cmdline and popupmenu together
+        long_message_to_split = true, -- long messages will be sent to a split
+        inc_rename = false, -- enables an input dialog for inc-rename.nvim
+        lsp_doc_border = false, -- add a border to hover docs and signature help
+      },
+    },
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
+    }
+  },
 }
 
