@@ -33,33 +33,59 @@ return {
 
   { "tpope/vim-fugitive" }, -- Git commands like :Git, :Gdiff, :Gblame, etc.
 
+  -- Git Diff Viewer
+  {
+    "sindrets/diffview.nvim",
+    dependencies = "nvim-lua/plenary.nvim",
+    config = function()
+      vim.keymap.set("n", "<leader>gd", ":DiffviewOpen<CR>", { noremap = true, silent = true, desc = "Git Diff" })
+      vim.keymap.set("n", "<leader>gx", ":DiffviewClose<CR>", { noremap = true, silent = true, desc = "Close Git Diff" })
+    end,
+  },
+
   -- LSP & Autocomplete
   { "neovim/nvim-lspconfig", config = function()
-    local lspconfig = require("lspconfig")
+      local lspconfig = require("lspconfig")
 
-    -- Set diagnostic icons
-    local signs = { Error = "", Warn = "", Hint = "", Info = "" }
-    for type, icon in pairs(signs) do
-      local hl = "DiagnosticSign" .. type
-      vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-    end
+      -- Set diagnostic icons
+      local signs = { Error = "", Warn = "", Hint = "", Info = "" }
+      for type, icon in pairs(signs) do
+        local hl = "DiagnosticSign" .. type
+        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+      end
 
-    -- Enable TypeScript & React LSP (use ts_ls instead of tsserver)
-    lspconfig.ts_ls.setup({
-      filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
-      root_dir = lspconfig.util.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git"),
+      -- Enable TypeScript & React LSP (use ts_ls instead of tsserver)
+      lspconfig.ts_ls.setup({
+        filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
+        root_dir = lspconfig.util.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git"),
+      })
+
+      -- Enable ESLint
+      lspconfig.eslint.setup({
+        on_attach = function(client, bufnr)
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            buffer = bufnr,
+            command = "EslintFixAll",
+          })
+        end,
     })
 
-    -- Enable ESLint
-    lspconfig.eslint.setup({
-      on_attach = function(client, bufnr)
-        vim.api.nvim_create_autocmd("BufWritePre", {
-          buffer = bufnr,
-          command = "EslintFixAll",
-        })
-      end,
+    -- Enable Python LSP (Pyright)
+    lspconfig.pyright.setup({
+      filetypes = { "python" },
+      root_dir = lspconfig.util.root_pattern(".git", "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt"),
+      settings = {
+        python = {
+          analysis = {
+            typeCheckingMode = "basic",  -- Change to "strict" for more checks
+            autoSearchPaths = true,
+            useLibraryCodeForTypes = true,
+          }
+        }
+      }
     })
-  end },
+  end 
+},
 
   -- Autocomplete
   { "hrsh7th/nvim-cmp", dependencies = {
