@@ -68,7 +68,7 @@ function ShowPopup()
 
     popup_buf = vim.api.nvim_create_buf(false, true)
     local width = 50
-    local height = 10
+    local height = 22
     local opts = {
         relative = 'editor',
         width = width,
@@ -99,6 +99,8 @@ function ShowPopup()
         "<leader>qa  -> Close all Tabs",
         "<leader>e   -> Open File Explorer",
         "<leader>qf  ->  Close File Explorer",
+        "<leader>gd  ->  Open Git Diff",
+        "<leader>gx  ->  Close Git Diff",
         "",
         "[ Press ENTER to Close ]"
     }
