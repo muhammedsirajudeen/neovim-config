@@ -134,10 +134,10 @@ function ShowPopup()
     vim.api.nvim_buf_set_lines(popup_buf, 0, -1, false, lines)
 
     -- Set modern GUI-like colors
-    vim.cmd("highlight PopupBackground guibg=#1e1e2e guifg=#cdd6f4")
-    vim.cmd("highlight PopupKey guifg=#89b4fa gui=bold")
-    vim.cmd("highlight PopupBorder guifg=#89b4fa guibg=#1e1e2e")
-    vim.cmd("highlight PopupTitle guifg=#a6e3a1 guibg=#1e1e2e gui=bold")
+    vim.cmd("highlight PopupBackground guibg=#1f1f1f guifg=#cccccc")
+    vim.cmd("highlight PopupKey guifg=#4fc1ff gui=bold")
+    vim.cmd("highlight PopupBorder guifg=#007acc guibg=#1f1f1f")
+    vim.cmd("highlight PopupTitle guifg=#4ec9b0 guibg=#1f1f1f gui=bold")
 
     vim.api.nvim_win_set_option(popup_win, "winhl", "Normal:PopupBackground,FloatBorder:PopupBorder,FloatTitle:PopupTitle")
 
@@ -157,6 +157,5 @@ vim.api.nvim_set_keymap('n', '<leader>h', ':lua ShowPopup()<CR>', { noremap = tr
 -- custom key binding to show focus on to the file explorer
 vim.api.nvim_set_keymap("n", "<leader>e", ":NvimTreeFocus<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>qf", ":NvimTreeClose<CR>", { noremap = true, silent = true })
-
 
 

@@ -1,21 +1,14 @@
 return {
   -- Theme
-  { "folke/tokyonight.nvim", lazy = false, priority = 1000, config = function()
-    require("tokyonight").setup({
-      style = "night",
+  { "Mofiqul/vscode.nvim", lazy = false, priority = 1000, config = function()
+    require("vscode").setup({
+      style = "dark",
       transparent = false,
-      styles = {
-        sidebars = "dark",
-        floats = "dark",
-      },
-      on_colors = function(colors)
-        colors.bg = "#17191f"
-        colors.bg_dark = "#111318"
-        colors.bg_sidebar = "#111318"
-        colors.bg_statusline = "#17191f"
-      end,
+      italic_comments = false,
+      terminal_colors = true,
+      disable_nvimtree_bg = true,
     })
-    vim.cmd("colorscheme tokyonight")
+    vim.cmd.colorscheme("vscode")
   end },
 
   -- File Icons
@@ -77,7 +70,7 @@ return {
   { "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons" }, config = function()
     require("lualine").setup({
       options = {
-        theme = "tokyonight",
+        theme = "vscode",
         globalstatus = true,
         component_separators = { left = "", right = "" },
         section_separators = { left = "", right = "" },
@@ -299,6 +292,19 @@ return {
     end,
   },
 
+  -- Indentation and scope guides
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    opts = {
+      indent = { char = "│" },
+      scope = { enabled = true, char = "│" },
+      exclude = {
+        filetypes = { "help", "NvimTree" },
+      },
+    },
+  },
+
   -- 3. Nvim-Surround (Add/change/delete surrounding characters)
   {
     "kylechui/nvim-surround",
@@ -351,4 +357,3 @@ return {
     },
   },
 }
-
