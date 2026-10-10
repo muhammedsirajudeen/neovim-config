@@ -108,6 +108,8 @@ function ShowPopup()
         {"<leader>qa", "Close all Tabs"},
         {"<leader>e", "Open File Explorer"},
         {"<leader>qf", "Close File Explorer"},
+        {"<leader>xx", "Toggle Problems (diagnostics)"},
+        {"<C-\\>", "Toggle Integrated Terminal"},
         {"<leader>gd", "Open Git Diff"},
         {"<leader>gx", "Close Git Diff"},
     }
@@ -157,4 +159,3 @@ vim.api.nvim_set_keymap('n', '<leader>h', ':lua ShowPopup()<CR>', { noremap = tr
 -- custom key binding to show focus on to the file explorer
 vim.api.nvim_set_keymap("n", "<leader>e", ":NvimTreeFocus<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>qf", ":NvimTreeClose<CR>", { noremap = true, silent = true })
-

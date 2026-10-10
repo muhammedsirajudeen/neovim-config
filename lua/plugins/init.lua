@@ -51,6 +51,74 @@ return {
     },
   },
 
+  -- VS Code-like Problems panel
+  {
+    "folke/trouble.nvim",
+    cmd = "Trouble",
+    keys = {
+      { "<leader>xx", "<cmd>Trouble diagnostics toggle<CR>", desc = "Toggle diagnostics" },
+      { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<CR>", desc = "Buffer diagnostics" },
+      { "<leader>xr", "<cmd>Trouble lsp_references toggle<CR>", desc = "LSP references" },
+    },
+    opts = {},
+  },
+
+  -- Styled command line and messages
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    dependencies = { "MunifTanjim/nui.nvim" },
+    opts = {
+      presets = {
+        bottom_search = true,
+        command_palette = true,
+        long_message_to_split = true,
+        lsp_doc_border = true,
+      },
+    },
+  },
+
+  -- Drop-down integrated terminal
+  {
+    "akinsho/toggleterm.nvim",
+    version = "*",
+    keys = {
+      { "<C-\\>", "<cmd>ToggleTerm<CR>", desc = "Toggle terminal" },
+    },
+    opts = {
+      direction = "horizontal",
+      size = 15,
+      start_in_insert = true,
+      persist_size = true,
+    },
+  },
+
+  -- Startup dashboard
+  {
+    "goolord/alpha-nvim",
+    event = "VimEnter",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      local dashboard = require("alpha.themes.dashboard")
+      dashboard.section.header.val = {
+        "  _   _      _     ",
+        " | \\ | | ___| |__  ",
+        " |  \\| |/ _ \\ '_ \\ ",
+        " | |\\  |  __/ |_) |",
+        " |_| \\_|\\___|_.__/ ",
+      }
+      dashboard.section.buttons.val = {
+        dashboard.button("f", "  Find file", "<cmd>Telescope find_files<CR>"),
+        dashboard.button("r", "  Recent files", "<cmd>Telescope oldfiles<CR>"),
+        dashboard.button("g", "  Search text", "<cmd>Telescope live_grep<CR>"),
+        dashboard.button("e", "  File explorer", "<cmd>NvimTreeOpen<CR>"),
+        dashboard.button("q", "  Quit Neovim", "<cmd>qa<CR>"),
+      }
+      dashboard.section.footer.val = "VS Code-inspired Neovim"
+      require("alpha").setup(dashboard.config)
+    end,
+  },
+
   -- File Explorer
   { "nvim-tree/nvim-tree.lua", dependencies = { "nvim-tree/nvim-web-devicons" }, config = function()
     require("nvim-tree").setup({
