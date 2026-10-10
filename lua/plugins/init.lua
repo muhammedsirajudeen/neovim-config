@@ -38,8 +38,7 @@ return {
     "stevearc/aerial.nvim",
     cmd = { "AerialToggle", "AerialOpen", "AerialNavToggle" },
     keys = {
-      { "<leader>o", "<cmd>AerialToggle!<CR>", desc = "Toggle symbol outline" },
-      { "<leader>O", "<cmd>Telescope aerial<CR>", desc = "Search document symbols" },
+      { "<leader>o", "<cmd>AerialToggle<CR>", desc = "Toggle symbol outline" },
     },
     opts = {
       backends = { "lsp", "treesitter", "markdown", "man" },
@@ -49,12 +48,7 @@ return {
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
       "nvim-tree/nvim-web-devicons",
-      { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
     },
-    config = function(_, opts)
-      require("aerial").setup(opts)
-      require("telescope").load_extension("aerial")
-    end,
   },
 
   -- File Explorer
