@@ -23,10 +23,18 @@ vim.o.shiftwidth = 2
 vim.o.tabstop = 2
 vim.o.termguicolors = true
 vim.opt.background = "dark"
-vim.cmd("highlight Normal guibg=black")
-vim.cmd("highlight NonText guibg=black")
-vim.cmd("highlight NvimTreeNormal guibg=black")
-vim.cmd("highlight NvimTreeEndOfBuffer guibg=black")
+vim.opt.laststatus = 3
+vim.opt.showtabline = 2
+vim.opt.signcolumn = "yes"
+vim.opt.cursorline = true
+-- Use an editor-style blinking caret instead of the default block cursor.
+vim.opt.guicursor = {
+  "n-v-c:block-blinkwait700-blinkon400-blinkoff250",
+  "i-ci-ve:ver25-blinkwait700-blinkon400-blinkoff250",
+  "r-cr:hor20-blinkwait700-blinkon400-blinkoff250",
+  "o:hor50",
+  "a:blinkwait700-blinkon400-blinkoff250",
+}
 
 --my function definition
 local function goto_source()

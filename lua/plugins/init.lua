@@ -1,20 +1,96 @@
 return {
   -- Theme
   { "folke/tokyonight.nvim", lazy = false, priority = 1000, config = function()
+    require("tokyonight").setup({
+      style = "night",
+      transparent = false,
+      styles = {
+        sidebars = "dark",
+        floats = "dark",
+      },
+      on_colors = function(colors)
+        colors.bg = "#17191f"
+        colors.bg_dark = "#111318"
+        colors.bg_sidebar = "#111318"
+        colors.bg_statusline = "#17191f"
+      end,
+    })
     vim.cmd("colorscheme tokyonight")
   end },
 
   -- File Icons
   { "nvim-tree/nvim-web-devicons" },
 
+  -- VS Code-like breadcrumbs and symbol outline
+  {
+    "utilyre/barbecue.nvim",
+    version = "2.*",
+    dependencies = { "SmiteshP/nvim-navic", "nvim-tree/nvim-web-devicons" },
+    event = { "BufReadPost", "BufNewFile" },
+    config = function()
+      require("barbecue").setup({
+        show_dirname = true,
+        show_basename = true,
+        show_modified = true,
+        attach = true,
+      })
+    end,
+  },
+  {
+    "SmiteshP/nvim-navic",
+    dependencies = { "neovim/nvim-lspconfig" },
+    opts = { highlight = true, depth = 5, separator = "  ›  " },
+  },
+  {
+    "stevearc/aerial.nvim",
+    cmd = { "AerialToggle", "AerialOpen", "AerialNavToggle" },
+    keys = {
+      { "<leader>o", "<cmd>AerialToggle!<CR>", desc = "Toggle symbol outline" },
+      { "<leader>O", "<cmd>Telescope aerial<CR>", desc = "Search document symbols" },
+    },
+    opts = {
+      backends = { "lsp", "treesitter", "markdown", "man" },
+      layout = { min_width = 28, default_direction = "right", placement = "edge" },
+      show_guides = true,
+    },
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+      { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
+    },
+    config = function(_, opts)
+      require("aerial").setup(opts)
+      require("telescope").load_extension("aerial")
+    end,
+  },
+
   -- File Explorer
   { "nvim-tree/nvim-tree.lua", dependencies = { "nvim-tree/nvim-web-devicons" }, config = function()
-    require("nvim-tree").setup()
+    require("nvim-tree").setup({
+      view = { width = 30, side = "left", preserve_window_proportions = true },
+      renderer = { highlight_git = "name", indent_markers = { enable = true } },
+      git = { enable = true },
+    })
   end },
 
   -- Status Line
   { "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons" }, config = function()
-    require("lualine").setup()
+    require("lualine").setup({
+      options = {
+        theme = "tokyonight",
+        globalstatus = true,
+        component_separators = { left = "", right = "" },
+        section_separators = { left = "", right = "" },
+      },
+      sections = {
+        lualine_a = { "mode" },
+        lualine_b = { "branch", "diff", "diagnostics" },
+        lualine_c = { { "filename", path = 1 } },
+        lualine_x = { "filetype", "encoding", "fileformat" },
+        lualine_y = { "progress" },
+        lualine_z = { "location" },
+      },
+    })
   end },
 
   -- Git Integration
@@ -47,6 +123,13 @@ return {
   { "neovim/nvim-lspconfig", config = function()
       local lspconfig = require("lspconfig")
 
+      local navic = require("nvim-navic")
+      local on_attach = function(client, bufnr)
+        if client.server_capabilities.documentSymbolProvider then
+          navic.attach(client, bufnr)
+        end
+      end
+
       -- Set diagnostic icons
       local signs = { Error = "", Warn = "", Hint = "", Info = "" }
       for type, icon in pairs(signs) do
@@ -56,13 +139,16 @@ return {
 
       -- Enable TypeScript & React LSP (use ts_ls instead of tsserver)
       lspconfig.ts_ls.setup({
+        on_attach = on_attach,
         filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
         root_dir = lspconfig.util.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git"),
       })
 
       -- Enable ESLint
       lspconfig.eslint.setup({
+        on_attach = on_attach,
         on_attach = function(client, bufnr)
+          on_attach(client, bufnr)
           vim.api.nvim_create_autocmd("BufWritePre", {
             buffer = bufnr,
             command = "EslintFixAll",
@@ -72,6 +158,7 @@ return {
 
     -- Enable Python LSP (Pyright)
     lspconfig.pyright.setup({
+      on_attach = on_attach,
       filetypes = { "python" },
       root_dir = lspconfig.util.root_pattern(".git", "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt"),
       settings = {
@@ -157,11 +244,16 @@ return {
     config = function()
       require("bufferline").setup({
         options = {
+          mode = "buffers",
           numbers = "ordinal", -- Show buffer numbers
           diagnostics = "nvim_lsp",
           show_buffer_close_icons = false,
           show_close_icon = false,
           separator_style = "slant",
+          always_show_bufferline = true,
+          offsets = {
+            { filetype = "NvimTree", text = "", padding = 1 },
+          },
         },
       })
     end,
