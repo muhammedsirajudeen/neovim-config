@@ -17,7 +17,7 @@ require("lspconfig").tailwindcss.setup{}
 
 -- Basic settings
 vim.o.number = true
-vim.o.relativenumber = true
+vim.o.relativenumber = false
 vim.o.expandtab = true
 vim.o.shiftwidth = 2
 vim.o.tabstop = 2
@@ -157,5 +157,4 @@ vim.api.nvim_set_keymap('n', '<leader>h', ':lua ShowPopup()<CR>', { noremap = tr
 -- custom key binding to show focus on to the file explorer
 vim.api.nvim_set_keymap("n", "<leader>e", ":NvimTreeFocus<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>qf", ":NvimTreeClose<CR>", { noremap = true, silent = true })
-
 
